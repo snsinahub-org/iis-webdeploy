@@ -33,7 +33,7 @@ runs:
         $password = '${{ inputs.password }}'
         $auth = 'Basic'
         $msdeploy = Get-Command 'C:\Program Files (x86)\IIS\Microsoft Web Deploy V3\msdeploy.exe'
-        $command = "& `$msdeploy --% -verb:sync -enableRule:AppOffline -AllowUntrusted -source:package=""$src"" -dest:contentPath=""$dest"",computerName=""$cname"",IncludeAcls=False,username=""$username"",password=""$password"",authType=""$auth"""
+        $command = "& `$msdeploy --% -verb:sync -AllowUntrusted -source:package=""$src"" -dest:contentPath=""$dest"",computerName=""$cname"",IncludeAcls=False,username=""$username"",password=""$password"",authType=""$auth"""
         $sb = $ExecutionContext.InvokeCommand.NewScriptBlock($command)
         & $sb
       shell: powershell
