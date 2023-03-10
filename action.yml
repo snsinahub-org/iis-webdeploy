@@ -1,9 +1,6 @@
 name: 'SQLCMD powershell'
 description: 'An action for running Invoke-SqlCmd in Windows powershell'
 author: 'Siavash Namvar'
-branding:
-  icon: database
-  color: gray-dark
 inputs:
   source:  
     description: 'source zip file'
@@ -22,11 +19,7 @@ inputs:
     description: 'sqlcmd_variables_type'
     required: false
     default: ""
-  
-outputs:
-  random-number:
-    description: "Random number"
-    value: "no"
+
 runs:
   using: "composite"
   steps:
