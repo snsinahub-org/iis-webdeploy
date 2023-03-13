@@ -1,0 +1,39 @@
+name: 'SQLCMD powershell'
+description: 'An action for running Invoke-SqlCmd in Windows powershell'
+author: 'Siavash Namvar'
+inputs:
+  source:  
+    description: 'source zip file'
+    required: true
+  destination:  
+    description: 'destination path'
+    required: true
+  remote_url:  
+    description: 'db name'
+    required: true  
+  username:  
+    description: 'sqlcmd_variables'
+    required: false
+    default: ""
+  password:  
+    description: 'sqlcmd_variables_type'
+    required: false
+    default: ""
+
+runs:
+  using: "composite"
+  steps:
+    - run: |       
+        echo "project app"     
+
+        $src = '${{ inputs.source }}'
+        $dest = '${{ inputs.destination }}'
+        $cname = '${{ inputs.remote_url }}'
+        $username = '${{ inputs.username }}'
+        $password = '${{ inputs.password }}'
+        $auth = 'Basic'
+        $msdeploy = Get-Command 'C:\Program Files (x86)\IIS\Microsoft Web Deploy V3\msdeploy.exe'
+        $command = "& `$msdeploy --% -verb:sync -AllowUntrusted -source:package=""$src"" -dest:contentPath=""$dest"",computerName=""$cname"",IncludeAcls=False,username=""$username"",password=""$password"",authType=""$auth"""
+        $sb = $ExecutionContext.InvokeCommand.NewScriptBlock($command)
+        & $sb
+      shell: powershell
