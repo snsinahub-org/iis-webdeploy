@@ -36,4 +36,7 @@ runs:
         $command = "& `$msdeploy --% -verb:sync -AllowUntrusted -source:package=""$src"" -dest:contentPath=""$dest"",computerName=""$cname"",IncludeAcls=False,username=""$username"",password=""$password"",authType=""$auth"""
         $sb = $ExecutionContext.InvokeCommand.NewScriptBlock($command)
         & $sb
+
+        echo "command ======= "
+        echo $command
       shell: powershell
