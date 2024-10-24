@@ -1,5 +1,5 @@
 name: 'IIS Webdeploy powershell'
-description: 'An action for running Invoke-SqlCmd in Windows powershell'
+description: 'An action for deploying web applications to IIS server using Windows powershell'
 author: 'Siavash Namvar'
 inputs:
   source:  
