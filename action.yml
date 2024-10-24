@@ -3,24 +3,24 @@ description: 'An action for deploying web applications to IIS server using Windo
 author: 'Siavash Namvar'
 inputs:
   source:  
-    description: 'source zip file'
+    description: 'source zip file, or app_offline.htm'
     required: true
   destination:  
-    description: 'destination path'
+    description: 'destination path on IIS server'
     required: true
   remote_url:  
-    description: 'db name'
+    description: 'IIS URL'
     required: true  
   username:  
-    description: 'sqlcmd_variables'
+    description: 'IIS/Windows username'
     required: false
     default: ""
   password:  
-    description: 'sqlcmd_variables_type'
+    description: 'IIS/Windows password'
     required: false
     default: ""
   type:
-    description: 'type of deployment, add_appoffline, del_appoffline, full'
+    description: 'type of IIS deployment, add_appoffline, del_appoffline, full'
     required: false
     default: "sqlcmd"
 
