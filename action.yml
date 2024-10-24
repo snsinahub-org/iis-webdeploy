@@ -19,6 +19,10 @@ inputs:
     description: 'sqlcmd_variables_type'
     required: false
     default: ""
+  type:
+    description: 'type of deployment, add_appoffline, del_appoffline, full'
+    required: false
+    default: "sqlcmd"
 
 runs:
   using: "composite"
@@ -37,3 +41,36 @@ runs:
         $sb = $ExecutionContext.InvokeCommand.NewScriptBlock($command)
         & $sb
       shell: powershell
+      if: ${{ inputs.type == 'full' }}
+
+    - run: |       
+        echo "project app"     
+
+        $src = '${{ inputs.source }}'
+        $dest = '${{ inputs.destination }}'
+        $cname = '${{ inputs.remote_url }}'
+        $username = '${{ inputs.username }}'
+        $password = '${{ inputs.password }}'
+        $auth = 'Basic'
+        $msdeploy = Get-Command 'C:\Program Files (x86)\IIS\Microsoft Web Deploy V3\msdeploy.exe'
+        $command = "& `$msdeploy --% -verb:sync -AllowUntrusted -source:contentPath=""$src"" -dest:contentPath=""$dest/app_offline.htm"",computerName=""$cname"",IncludeAcls=False,username=""$username"",password=""$password"",authType=""$auth"""
+        $sb = $ExecutionContext.InvokeCommand.NewScriptBlock($command)
+        & $sb
+      shell: powershell
+      if: ${{ inputs.type == 'add_appoffline' }}
+
+    - run: |       
+        echo "project app"     
+
+        $src = '${{ inputs.source }}'
+        $dest = '${{ inputs.destination }}'
+        $cname = '${{ inputs.remote_url }}'
+        $username = '${{ inputs.username }}'
+        $password = '${{ inputs.password }}'
+        $auth = 'Basic'
+        $msdeploy = Get-Command 'C:\Program Files (x86)\IIS\Microsoft Web Deploy V3\msdeploy.exe'
+        $command = "& `$msdeploy --% -verb:delete -AllowUntrusted -dest:contentPath=""$dest/app_offline.htm"",computerName=""$cname"",IncludeAcls=False,username=""$username"",password=""$password"",authType=""$auth"""
+        $sb = $ExecutionContext.InvokeCommand.NewScriptBlock($command)
+        & $sb
+      shell: powershell
+      if: ${{ inputs.type == 'del_appoffline' }}
