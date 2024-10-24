@@ -52,7 +52,7 @@ runs:
         $username = '${{ inputs.username }}'
         $password = '${{ inputs.password }}'
         $auth = 'Basic'
-        echo "$src\App_offline.htm" $src $cname 
+        echo "$dest\$src" $src $cname 
         $msdeploy = Get-Command 'C:\Program Files (x86)\IIS\Microsoft Web Deploy V3\msdeploy.exe'
         $command = "& `$msdeploy --% -verb:sync -AllowUntrusted -source:contentPath=""$src"" -dest:contentPath=""$dest\App_offline.htm"",computerName=""$cname"",IncludeAcls=False,username=""$username"",password=""$password"",authType=""$auth"""
         $sb = $ExecutionContext.InvokeCommand.NewScriptBlock($command)
