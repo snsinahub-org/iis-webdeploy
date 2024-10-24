@@ -22,7 +22,7 @@ inputs:
   type:
     description: 'type of IIS deployment, add_appoffline, del_appoffline, full'
     required: false
-    default: "sqlcmd"
+    default: "full"
 
 runs:
   using: "composite"
