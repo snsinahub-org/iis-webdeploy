@@ -1,6 +1,6 @@
 # iis-webdeploy
 
-This action helps to deploy entire application to a local or remote IIS server. Moreover, this action supports to add or remove a file to/from IIS server as well, this feature is specifically useful when you try to make a website offline or bring it back to online.
+This GitHub Action helps deploy an entire application to a local or remote IIS server. Additionally, it supports adding or removing files from the IIS server, which is particularly useful for taking a website offline or bringing it back online.
 
 ```YAML
   - name: publish to server
@@ -22,4 +22,4 @@ This action helps to deploy entire application to a local or remote IIS server. 
 
 ## External link 
 
-https://learn.microsoft.com/en-us/powershell/scripting/windows-powershell/wmf/setup/install-configure?view=powershell-7.3
+For more information, visit  [Microsoft documentation](https://learn.microsoft.com/en-us/powershell/scripting/windows-powershell/wmf/setup/install-configure?view=powershell-7.3)
