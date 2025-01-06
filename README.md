@@ -14,12 +14,12 @@ This GitHub Action helps deploy an entire application to a local or remote IIS s
       type: <type-of-deployment>
 ```
 
-## Supported type of deployments 
+## Supported types of deployments 
 
-- add_appoffline: upload a file to remote server
+- add_appoffline: upload a file to the remote server
 - del_appoffline: delete a file from server
-- full: deploy entire application (.zip format) to server
+- full: deploy the entire application (.zip format) to the server
 
 ## External link 
 
-For more information, visit  [Microsoft documentation](https://learn.microsoft.com/en-us/powershell/scripting/windows-powershell/wmf/setup/install-configure?view=powershell-7.3)
+For more information, visit the [Microsoft documentation](https://learn.microsoft.com/en-us/powershell/scripting/windows-powershell/wmf/setup/install-configure?view=powershell-7.3)
