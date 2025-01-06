@@ -14,7 +14,7 @@ This GitHub Action helps deploy an entire application to a local or remote IIS s
       type: <type-of-deployment>
 ```
 
-## Supported type of seployments 
+## Supported type of deployments 
 
 - add_appoffline: upload a file to remote server
 - del_appoffline: delete a file from server
