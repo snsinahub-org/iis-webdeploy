@@ -20,7 +20,7 @@ inputs:
     required: false
     default: ""
   type:
-    description: 'type of IIS deployment, add_appoffline, del_appoffline, full'
+    description: 'type of IIS deployment, add_appoffline, del_appoffline, full, add_single_file, del_single_file'
     required: false
     default: ""
 
@@ -76,3 +76,38 @@ runs:
         & $sb
       shell: powershell
       if: ${{ inputs.type == 'del_appoffline' }}
+
+
+    - run: |       
+        echo "Make website offline"     
+
+        $src = '${{ inputs.source }}'
+        $dest = '${{ inputs.destination }}'
+        $cname = '${{ inputs.remote_url }}'
+        $username = '${{ inputs.username }}'
+        $password = '${{ inputs.password }}'
+        $auth = 'Basic'
+        $currentDir = "${{ github.workspace }}"
+
+        $msdeploy = Get-Command 'C:\Program Files (x86)\IIS\Microsoft Web Deploy V3\msdeploy.exe'
+        $command = "& `$msdeploy --% -verb:sync -AllowUntrusted -source:contentPath=""$currentDir\$src"" -dest:contentPath=""$dest\$src"",computerName=""$cname"",IncludeAcls=False,username=""$username"",password=""$password"",authType=""$auth"""
+        $sb = $ExecutionContext.InvokeCommand.NewScriptBlock($command)
+        & $sb
+      shell: powershell
+      if: ${{ inputs.type == 'add_single_file' }}
+
+    - run: |       
+        echo "project app"     
+
+        $src = '${{ inputs.source }}'
+        $dest = '${{ inputs.destination }}'
+        $cname = '${{ inputs.remote_url }}'
+        $username = '${{ inputs.username }}'
+        $password = '${{ inputs.password }}'
+        $auth = 'Basic'
+        $msdeploy = Get-Command 'C:\Program Files (x86)\IIS\Microsoft Web Deploy V3\msdeploy.exe'
+        $command = "& `$msdeploy --% -verb:delete -AllowUntrusted -dest:contentPath=""$dest\$src"",computerName=""$cname"",IncludeAcls=False,username=""$username"",password=""$password"",authType=""$auth"""
+        $sb = $ExecutionContext.InvokeCommand.NewScriptBlock($command)
+        & $sb
+      shell: powershell
+      if: ${{ inputs.type == 'del_single_file' }}
