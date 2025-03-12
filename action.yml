@@ -84,7 +84,7 @@ runs:
 
 
     - run: |       
-        echo "Make website offline"     
+        echo "Add a single file"     
 
         $src = '${{ inputs.source }}'
         $dest = '${{ inputs.destination }}'
@@ -95,14 +95,14 @@ runs:
         $currentDir = "${{ github.workspace }}"
 
         $msdeploy = Get-Command '${{ inputs.msdeploy_path }}'
-        $command = "& `$msdeploy --% -verb:sync -AllowUntrusted -source:contentPath=""$currentDir\$src"" -dest:contentPath=""$dest"",computerName=""$cname"",IncludeAcls=False,username=""$username"",password=""$password"",authType=""$auth"""
+        $command = "& `$msdeploy --% -verb:sync -AllowUntrusted -source:contentPath=""$currentDir\$src"" -dest:contentPath=""$dest\$src"",computerName=""$cname"",IncludeAcls=False,username=""$username"",password=""$password"",authType=""$auth"""
         $sb = $ExecutionContext.InvokeCommand.NewScriptBlock($command)
         & $sb
       shell: powershell
       if: ${{ inputs.type == 'add_single_file' }}
 
     - run: |       
-        echo "project app"     
+        echo "Delete a single file"     
 
         $src = '${{ inputs.source }}'
         $dest = '${{ inputs.destination }}'
