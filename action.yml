@@ -94,8 +94,19 @@ runs:
         $auth = 'Basic'
         $currentDir = "${{ github.workspace }}"
 
+        $zipPath = "$currentDir\$src"
+        $extractPath = "$currentDir\extracted"
+        Expand-Archive -Path $zipPath -DestinationPath $extractPath -Force
+
+        # Assuming the single file is the only file in the zip
+        $filePath = Get-ChildItem -Path $extractPath -File | Select-Object -First 1
+
         $msdeploy = Get-Command '${{ inputs.msdeploy_path }}'
-        $command = "& `$msdeploy --% -verb:sync -AllowUntrusted -source:contentPath=""$currentDir\$src"" -dest:contentPath=""$dest\$src"",computerName=""$cname"",IncludeAcls=False,username=""$username"",password=""$password"",authType=""$auth"""
+        $command = "& `$msdeploy --% -verb:sync -AllowUntrusted -source:contentPath=""$filePath"" -dest:contentPath=""$dest\$($filePath.Name)"",computerName=""$cname"",IncludeAcls=False,username=""$username"",password=""$password"",authType=""$auth"""
+        
+
+        # $msdeploy = Get-Command '${{ inputs.msdeploy_path }}'
+        # $command = "& `$msdeploy --% -verb:sync -AllowUntrusted -source:contentPath=""$currentDir\$src"" -dest:contentPath=""$dest\$src"",computerName=""$cname"",IncludeAcls=False,username=""$username"",password=""$password"",authType=""$auth"""
         $sb = $ExecutionContext.InvokeCommand.NewScriptBlock($command)
         & $sb
       shell: powershell
