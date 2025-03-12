@@ -103,8 +103,8 @@ runs:
         $fileName = $filePath.Name
 
         $msdeploy = Get-Command '${{ inputs.msdeploy_path }}'
-        $command = "& `$msdeploy --% -verb:sync -AllowUntrusted -source:contentPath=""$currentDir\$src"" -dest:contentPath=""$dest\$fileName"",computerName=""$cname"",IncludeAcls=False,username=""$username"",password=""$password"",authType=""$auth"""
-        
+        $command = "& `$msdeploy --% -verb:sync -AllowUntrusted -source:package=""$currentDir\$src"" -dest:contentPath=""$dest"",computerName=""$cname"",IncludeAcls=False,username=""$username"",password=""$password"",authType=""$auth"""
+                # msdeploy -verb:sync -source:package="path\to\your\package.zip" -dest:iisApp="domain.com/appfolder" ,wmsvc=domain.com,username=IIS_username,password=IIS_password -allowUntrusted=true
 
         # $msdeploy = Get-Command '${{ inputs.msdeploy_path }}'
         # $command = "& `$msdeploy --% -verb:sync -AllowUntrusted -source:contentPath=""$currentDir\$src"" -dest:contentPath=""$dest\$src"",computerName=""$cname"",IncludeAcls=False,username=""$username"",password=""$password"",authType=""$auth"""
