@@ -20,9 +20,14 @@ inputs:
     required: false
     default: ""
   type:
-    description: 'type of IIS deployment, add_appoffline, del_appoffline, full'
+    description: 'type of IIS deployment, add_appoffline, del_appoffline, full, add_single_file, del_single_file'
     required: false
     default: ""
+  msdeploy_path:
+    description: 'path to msdeploy.exe'
+    required: false
+    default: 'C:\Program Files (x86)\IIS\Microsoft Web Deploy V3\msdeploy.exe'
+    
 
 runs:
   using: "composite"
@@ -36,7 +41,7 @@ runs:
         $username = '${{ inputs.username }}'
         $password = '${{ inputs.password }}'
         $auth = 'Basic'
-        $msdeploy = Get-Command 'C:\Program Files (x86)\IIS\Microsoft Web Deploy V3\msdeploy.exe'
+        $msdeploy = Get-Command '${{ inputs.msdeploy_path }}'
         $command = "& `$msdeploy --% -verb:sync -AllowUntrusted -source:package=""$src"" -dest:contentPath=""$dest"",computerName=""$cname"",IncludeAcls=False,username=""$username"",password=""$password"",authType=""$auth"""
         $sb = $ExecutionContext.InvokeCommand.NewScriptBlock($command)
         & $sb
@@ -54,7 +59,7 @@ runs:
         $auth = 'Basic'
         $currentDir = "${{ github.workspace }}"
 
-        $msdeploy = Get-Command 'C:\Program Files (x86)\IIS\Microsoft Web Deploy V3\msdeploy.exe'
+        $msdeploy = Get-Command '${{ inputs.msdeploy_path }}'
         $command = "& `$msdeploy --% -verb:sync -AllowUntrusted -source:contentPath=""$currentDir\$src"" -dest:contentPath=""$dest\App_offline.htm"",computerName=""$cname"",IncludeAcls=False,username=""$username"",password=""$password"",authType=""$auth"""
         $sb = $ExecutionContext.InvokeCommand.NewScriptBlock($command)
         & $sb
@@ -70,9 +75,45 @@ runs:
         $username = '${{ inputs.username }}'
         $password = '${{ inputs.password }}'
         $auth = 'Basic'
-        $msdeploy = Get-Command 'C:\Program Files (x86)\IIS\Microsoft Web Deploy V3\msdeploy.exe'
+        $msdeploy = Get-Command '${{ inputs.msdeploy_path }}'
         $command = "& `$msdeploy --% -verb:delete -AllowUntrusted -dest:contentPath=""$dest\App_offline.htm"",computerName=""$cname"",IncludeAcls=False,username=""$username"",password=""$password"",authType=""$auth"""
         $sb = $ExecutionContext.InvokeCommand.NewScriptBlock($command)
         & $sb
       shell: powershell
       if: ${{ inputs.type == 'del_appoffline' }}
+
+
+    - run: |       
+        echo "Add a single file"
+
+        $src = '${{ inputs.source }}'
+        $dest = '${{ inputs.destination }}'
+        $cname = '${{ inputs.remote_url }}'
+        $username = '${{ inputs.username }}'
+        $password = '${{ inputs.password }}'
+        $auth = 'Basic'
+        $currentDir = "${{ github.workspace }}"
+
+        $msdeploy = Get-Command '${{ inputs.msdeploy_path }}'
+        $command = "& `$msdeploy --% -verb:sync -AllowUntrusted -source:contentPath=""$currentDir\$src"" -dest:contentPath=""$dest\$src"",computerName=""$cname"",IncludeAcls=False,username=""$username"",password=""$password"",authType=""$auth"" -enableRule:DoNotDeleteRule"
+        
+        $sb = $ExecutionContext.InvokeCommand.NewScriptBlock($command)
+        & $sb
+      shell: powershell
+      if: ${{ inputs.type == 'add_single_file' }}
+
+    - run: |       
+        echo "Delete a single file"     
+
+        $src = '${{ inputs.source }}'
+        $dest = '${{ inputs.destination }}'
+        $cname = '${{ inputs.remote_url }}'
+        $username = '${{ inputs.username }}'
+        $password = '${{ inputs.password }}'
+        $auth = 'Basic'
+        $msdeploy = Get-Command '${{ inputs.msdeploy_path }}'
+        $command = "& `$msdeploy --% -verb:delete -AllowUntrusted -dest:contentPath=""$dest\$src"",computerName=""$cname"",IncludeAcls=False,username=""$username"",password=""$password"",authType=""$auth"""
+        $sb = $ExecutionContext.InvokeCommand.NewScriptBlock($command)
+        & $sb
+      shell: powershell
+      if: ${{ inputs.type == 'del_single_file' }}
