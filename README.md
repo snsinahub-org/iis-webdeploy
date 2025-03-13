@@ -12,12 +12,15 @@ This GitHub Action helps deploy an entire application to a local or remote IIS s
       username: <remote-server-username>
       password: <remote-server-password>
       type: <type-of-deployment>
+      msdeploy_path: path to msdeploy.exe on runner server, default is 'C:\Program Files (x86)\IIS\Microsoft Web Deploy V3\msdeploy.exe'
 ```
 
 ## Supported types of deployments 
 
 - add_appoffline: upload a file to the remote server
 - del_appoffline: delete a file from server
+- add_single_file: deploy a single file to target
+- del_single_file: delete a single file from target
 - full: deploy the entire application (.zip format) to the server
 
 ## External link 
